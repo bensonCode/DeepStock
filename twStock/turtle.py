@@ -59,9 +59,9 @@ index_data['当天的仓位'].fillna(method='ffill', inplace=True)
 #index_data = index_data[index_data['date'] >= pd.to_datetime('19930101')]
 
 # 当仓位为1时，买入上证指数，当仓位为0时，空仓。计算从19920101至今的资金指数
-index_data['资金指数'] = (index_data['fluctuation'] * index_data['当天的仓位'] + 1.0).cumprod()
-initial_idx = index_data.iloc[0]['close'] / (1 + index_data.iloc[0]['fluctuation'])
-index_data['资金指数'] *= initial_idx
+index_data['资金指数'] = (index_data['fluctuation'] * index_data['当天的仓位']).cumsum()
+#initial_idx = index_data.iloc[0]['close'] / (1 + index_data.iloc[0]['fluctuation'])
+#index_data['资金指数'] *= initial_idx
 
 # 输出数据到指定文件
 index_data[['date', 'high', 'low', 'close', 'fluctuation', '最近N1个交易日的最高点',
@@ -75,4 +75,4 @@ index_data['海龟法则每日涨跌幅'] = index_data['fluctuation'] * index_da
 print(index_data)
 #year_rtn = index_data.set_index('date')[['fluctuation', '海龟法则每日涨跌幅']].resample("A", how=lambda x: (x + 1.0).prod() - 1.0) * 100
 
-#index_data.to_csv("result.csv", encoding="utf-8")
+index_data.to_csv("result.csv", encoding="utf-8")
