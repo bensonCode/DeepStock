@@ -1,4 +1,5 @@
 import pandas as pd
+
 import matplotlib.pyplot as plt
 from datetime import datetime
 import matplotlib.dates as mdates
@@ -18,25 +19,28 @@ tx = df.loc[df["contract"] == "TX"]
 tx = tx.sort_values(by=['date', 'contract_m'])
 tx = tx.groupby("date").head(1)
 
+tx.to_csv("./data/tx/2017tx.csv", encoding="utf-8", index=False)
+
 
 #xs = [datetime.strptime(d, '%m/%d/%Y').date() for d in tx["date"]]
 
-xs = [datetime.fromtimestamp(d) for d in tx["date"]]
+#xs = [datetime.fromtimestamp(d) for d in tx["date"]]
 
 print(tx.tail(100))
 
-plt.subplot(1, 1, 1)
 
-plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
-plt.gca().xaxis.set_major_locator(AutoLocator())
-plt.plot(xs, tx["volume"], color="red", label="close")
 
-plt.title("stock close price")
-plt.xlabel("date")
-plt.ylabel("price")
-#plt.gcf().autofmt_xdate()
-plt.legend(loc='best')
-plt.show()
+# plt.subplot(1, 1, 1)
+# plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
+# plt.gca().xaxis.set_major_locator(AutoLocator())
+# plt.plot(xs, tx["volume"], color="red", label="close")
+#
+# plt.title("stock close price")
+# plt.xlabel("date")
+# plt.ylabel("price")
+# #plt.gcf().autofmt_xdate()
+# plt.legend(loc='best')
+# plt.show()
 
 # df.info()
 # print(df.size)
