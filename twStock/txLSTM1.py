@@ -49,9 +49,20 @@ model = buildOneToOneModel(X_train.shape)
 # model.fit(X_train, Y_train, epochs=100, batch_size=1, validation_data=(X_val, Y_val), callbacks=[callback])
 model.fit(X_train, Y_train, epochs=100, batch_size=1, validation_data=(X_val, Y_val))
 
+
 # 預測
 # trainPredict = model.predict(X_train)
-# testPredict = model.predict(X_val)
+testPredict = model.predict(X_val)
 #
 # print("predict", trainPredict)
 # print("predict222", testPredict)
+
+
+# commonUtil.model_score(model, X_train, Y_train, X_val, Y_val)
+
+import matplotlib.pyplot as plt2
+
+plt2.plot(testPredict, color='red', label='Prediction')
+plt2.plot(Y_val, color='blue', label='Actual')
+plt2.legend(loc='best')
+plt2.show()

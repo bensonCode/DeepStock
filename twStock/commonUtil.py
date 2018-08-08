@@ -1,6 +1,7 @@
 from sklearn import preprocessing
 import numpy as np
 import pandas as pd
+import math, time
 
 
 def prepare_data(df, test_data_rate):
@@ -54,3 +55,11 @@ def split_data(X, Y, rate):
     X_val = X[:int(X.shape[0] * rate)]
     Y_val = Y[:int(Y.shape[0] * rate)]
     return X_train, Y_train, X_val, Y_val
+
+def model_score(model, X_train, y_train, X_test, y_test):
+    trainScore = model.evaluate(X_train, y_train, verbose=0)
+    print('Train Score: %.5f MSE (%.2f RMSE)' % (trainScore[0], math.sqrt(trainScore[0])))
+
+    testScore = model.evaluate(X_test, y_test, verbose=0)
+    print('Test Score: %.5f MSE (%.2f RMSE)' % (testScore[0], math.sqrt(testScore[0])))
+    return trainScore[0], testScore[0]
