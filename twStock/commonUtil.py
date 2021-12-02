@@ -1,7 +1,8 @@
-from sklearn import preprocessing
+import math
+
 import numpy as np
 import pandas as pd
-import math, time
+from sklearn import preprocessing
 
 
 def prepare_data(df, test_data_rate):
@@ -21,17 +22,17 @@ def prepare_data(df, test_data_rate):
 
 def normalize_data(df):
     min_max_scaler = preprocessing.MinMaxScaler()
-    df['open'] = min_max_scaler.fit_transform(df.open.values.reshape(-1, 1))
+    df['open'] = min_max_scaler.fit_transform(df['open'].values.reshape(-1, 1))
     df['high'] = min_max_scaler.fit_transform(df.high.values.reshape(-1, 1))
     df['low'] = min_max_scaler.fit_transform(df.low.values.reshape(-1, 1))
     df['volume'] = min_max_scaler.fit_transform(df.volume.values.reshape(-1, 1))
     df['fluctuation'] = min_max_scaler.fit_transform(df['fluctuation'].values.reshape(-1, 1))
     df_dict = {
-                "open": df['open'],
-                "high": df['high'],
-                "low": df['low'],
-                "volume": df['volume'],
-                "fluctuation": df['fluctuation']
+        "open": df['open'],
+        "high": df['high'],
+        "low": df['low'],
+        "volume": df['volume'],
+        "fluctuation": df['fluctuation']
     }
     dframe = pd.DataFrame(df_dict)
     return dframe
@@ -56,8 +57,10 @@ def split_data(X, Y, rate):
     Y_val = Y[:int(Y.shape[0] * rate)]
     return X_train, Y_train, X_val, Y_val
 
+
 def model_score(model, X_train, y_train, X_test, y_test):
     trainScore = model.evaluate(X_train, y_train, verbose=0)
+    print(trainScore)
     print('Train Score: %.5f MSE (%.2f RMSE)' % (trainScore[0], math.sqrt(trainScore[0])))
 
     testScore = model.evaluate(X_test, y_test, verbose=0)
