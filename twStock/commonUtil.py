@@ -26,12 +26,15 @@ def normalize_data(df):
     df['high'] = min_max_scaler.fit_transform(df.high.values.reshape(-1, 1))
     df['low'] = min_max_scaler.fit_transform(df.low.values.reshape(-1, 1))
     df['volume'] = min_max_scaler.fit_transform(df.volume.values.reshape(-1, 1))
+    df['close'] = min_max_scaler.fit_transform(df['close'].values.reshape(-1, 1))
     df['fluctuation'] = min_max_scaler.fit_transform(df['fluctuation'].values.reshape(-1, 1))
+
     df_dict = {
         "open": df['open'],
         "high": df['high'],
         "low": df['low'],
         "volume": df['volume'],
+        "close": df['close'],
         "fluctuation": df['fluctuation']
     }
     dframe = pd.DataFrame(df_dict)
@@ -45,7 +48,7 @@ def build_train(train, pastDay=30, futureDay=5):
     x_train, y_train = [], []
     for i in range(train.shape[0] - futureDay - pastDay):
         x_train.append(np.array(train.iloc[i:i + pastDay]))
-        y_train.append(np.array(train.iloc[i + pastDay:i + pastDay + futureDay]["fluctuation"]))
+        y_train.append(np.array(train.iloc[i + pastDay:i + pastDay + futureDay]["close"]))
     return np.array(x_train), np.array(y_train)
 
 
@@ -61,8 +64,10 @@ def split_data(X, Y, rate):
 def model_score(model, X_train, y_train, X_test, y_test):
     trainScore = model.evaluate(X_train, y_train, verbose=0)
     print(trainScore)
-    print('Train Score: %.5f MSE (%.2f RMSE)' % (trainScore[0], math.sqrt(trainScore[0])))
+    # print(trainScore[0])
+    # print(math.sqrt(trainScore[0]))
+    print('Train Score: %.5f MSE (%.2f RMSE)' % (trainScore, math.sqrt(trainScore)))
 
     testScore = model.evaluate(X_test, y_test, verbose=0)
-    print('Test Score: %.5f MSE (%.2f RMSE)' % (testScore[0], math.sqrt(testScore[0])))
-    return trainScore[0], testScore[0]
+    print('Test Score: %.5f MSE (%.2f RMSE)' % (testScore, math.sqrt(testScore)))
+    return trainScore, testScore

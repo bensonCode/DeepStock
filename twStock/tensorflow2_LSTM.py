@@ -35,7 +35,7 @@ padded_inputs_test = pad_sequences(x_test, maxlen=max_sequence_length, value = 0
 # Define the Keras model
 model = Sequential()
 model.add(Embedding(num_distinct_words, embedding_output_dims, input_length=max_sequence_length))
-model.add(LSTM(10))
+model.add(LSTM(6))
 model.add(Dense(1, activation='sigmoid'))
 
 # Compile the model
